@@ -11,7 +11,8 @@ export class UserService {
         return this.getUser(newUser.id)
     }
     getUser(id: string) {
-        return this.userDB[id] ? { ...this.userDB[id] } : undefined
+        this.checkUserExists(id)
+        return { ...this.userDB[id] }
     }
     updateUser(id: string, update) {
         this.checkUserExists(id)

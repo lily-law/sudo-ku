@@ -40,10 +40,10 @@ describe('UserController', () => {
         })
     })
     describe('Get non existant user', () => {
-        it('should return undefined', async () => {
-            expect(
+        it('should throw exception', async () => {
+            expect(() =>
                 moduleController.getUser({ id: nonExistantUser.id })
-            ).toEqual(undefined)
+            ).toThrow()
         })
     })
     describe('Update user name', () => {

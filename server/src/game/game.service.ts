@@ -32,11 +32,17 @@ export class GameService {
         return gamesList.slice(offset)
     }
     getGameById(id: string) {
-        return this.gameDB[id] ? { ...this.gameDB[id] } : undefined
+        this.checkGameExists(id)
+        return { ...this.gameDB[id] }
     }
     addGame({ template, seed, difficulty, time, sparcity }) {
         const newGame = new Game(template, seed, difficulty, time, sparcity)
         this.gameDB[newGame.id] = newGame
         return this.getGameById(newGame.id)
+    }
+    private checkGameExists(id) {
+        if (!this.gameDB[id]) {
+            throw new NotFoundException(`Game not found!`)
+        }
     }
 }

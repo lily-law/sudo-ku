@@ -50,10 +50,10 @@ describe('GameController', () => {
         })
     })
     describe('Get non existant game', () => {
-        it('should return undefined', async () => {
-            expect(
+        it('should throw exception', async () => {
+            expect(() =>
                 moduleController.getGameById({ id: nonExistantGame.id })
-            ).toEqual(undefined)
+            ).toThrow()
         })
     })
     describe('Get list of games', () => {
