@@ -92,17 +92,28 @@ describe('UserController', () => {
     describe('Save dummy game', () => {
         it('should return new save game object', async () => {
             const user = await moduleController.addUser('test_user')
-            const savedGame = await moduleController.saveGame({userId: user.id}, { test: 'dummyGame' })
+            const savedGame = await moduleController.saveGame(
+                { userId: user.id },
+                { test: 'dummyGame' }
+            )
             expect(savedGame).toEqual(expect.objectContaining(anySaveGame))
         })
     })
     describe('Update dummy save game', () => {
         it('should return updated save game object', async () => {
             const user = await moduleController.addUser('test_user')
-            const savedGame = await moduleController.saveGame({userId: user.id}, { test: 'dummyGame' })
+            const savedGame = await moduleController.saveGame(
+                { userId: user.id },
+                { test: 'dummyGame' }
+            )
             const newSaveGameData = { test: 'dummyGameUpdated' }
-            const updatedSaveGame = await moduleController.updateSaveGame({userId: user.id}, {... savedGame, game: newSaveGameData})
-            expect(updatedSaveGame).toEqual(expect.objectContaining({game: newSaveGameData}))
+            const updatedSaveGame = await moduleController.updateSaveGame(
+                { userId: user.id },
+                { ...savedGame, game: newSaveGameData }
+            )
+            expect(updatedSaveGame).toEqual(
+                expect.objectContaining({ game: newSaveGameData })
+            )
         })
     })
 })

@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { User, SaveGame } from './user.model'
+import { Game } from '../game/game.model'
 
 @Injectable()
 export class UserService {
@@ -24,16 +25,16 @@ export class UserService {
         delete this.userDB[id]
         return !this.userDB[id] ? id : false
     }
-    addSaveGame(userId: string, game) {
+    addSaveGame(userId: string, game: Game) {
         this.checkUserExists(userId)
         const saveGame = new SaveGame(game)
         this.userDB[userId].savedGames[saveGame.id] = saveGame
-        return {...this.userDB[userId].savedGames[saveGame.id]}
+        return { ...this.userDB[userId].savedGames[saveGame.id] }
     }
     updateSaveGame(userId: string, saveGame: SaveGame) {
         this.checkSaveGameExists(userId, saveGame.id)
         this.userDB[userId].savedGames[saveGame.id] = saveGame
-        return {...this.userDB[userId].savedGames[saveGame.id]}
+        return { ...this.userDB[userId].savedGames[saveGame.id] }
     }
     private checkUserExists(id) {
         if (!this.userDB[id]) {

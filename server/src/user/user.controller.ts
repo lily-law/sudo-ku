@@ -41,7 +41,10 @@ export class UserController {
     }
     @Put(':userId/game')
     updateSaveGame(@Param() params, @Body('saveGame') saveGame) {
-        const updatedSaveGame = this.userService.updateSaveGame(params.userId, saveGame)
+        const updatedSaveGame = this.userService.updateSaveGame(
+            params.userId,
+            saveGame
+        )
         return updatedSaveGame
     }
 }
