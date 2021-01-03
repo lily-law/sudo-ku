@@ -1,10 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { Game } from './game.model'
+import { Game, GameDocument } from './schemas/game.schema'
+import { CreateGameDto } from './dto/create-game.dto'
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class GameService {
-    private gameDB: { [gameId: string]: Game } = {}
-    getGamesByQuery({
+    constructor(@InjectModel(Game.name) private readonly gameModel: Model<GameDocument>) {}
+    async getByQuery({
         offset = 0,
         limit,
         difficulty,
@@ -17,32 +20,13 @@ export class GameService {
         time?: number
         sparcity?: number
     }) {
-        const gamesList = []
-        const filter = { difficulty, time, sparcity }
-        Object.values(this.gameDB).forEach(game => {
-            if (gamesList.length < offset + limit) {
-                const qualifies = Object.entries(filter).every(
-                    ([key, value]) => !value || game[key] === value
-                )
-                if (qualifies) {
-                    gamesList.push({ ...game })
-                }
-            }
-        })
-        return gamesList.slice(offset)
+        return this.gameModel.find({difficulty, time, sparcity}, null, {skip: offset, limit}).exec()
     }
-    getGameById(id: string) {
-        this.checkGameExists(id)
-        return { ...this.gameDB[id] }
+    async getById(id: string) {
+        return this.gameModel.findById(id).exec()
     }
-    addGame({ template, seed, difficulty, time, sparcity }) {
-        const newGame = new Game(template, seed, difficulty, time, sparcity)
-        this.gameDB[newGame.id] = newGame
-        return this.getGameById(newGame.id)
-    }
-    private checkGameExists(id) {
-        if (!this.gameDB[id]) {
-            throw new NotFoundException(`Game not found!`)
-        }
+    async create(createGameDto: CreateGameDto): Promise<Game> {
+        const newGame = new this.gameModel(createGameDto)
+        return newGame
     }
 }

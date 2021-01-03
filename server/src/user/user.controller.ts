@@ -9,7 +9,7 @@ import {
     Put
 } from '@nestjs/common'
 import { UserService } from './user.service'
-import { User } from './user.model'
+import { User } from './schemas/user.schema'
 
 @Controller('user')
 export class UserController {
@@ -39,10 +39,19 @@ export class UserController {
         const savedGame = this.userService.addSaveGame(params.userId, game)
         return savedGame
     }
-    @Put(':userId/game')
+    @Get(':userId/game/:gameId')
+    getSaveGame(@Param() params) {
+        const saveGame = this.userService.getSaveGame(
+            params.userId,
+            params.gameId
+        )
+        return saveGame
+    }
+    @Put(':userId/game/:gameId')
     updateSaveGame(@Param() params, @Body('saveGame') saveGame) {
         const updatedSaveGame = this.userService.updateSaveGame(
             params.userId,
+            params.gameId,
             saveGame
         )
         return updatedSaveGame

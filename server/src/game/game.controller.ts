@@ -8,17 +8,17 @@ export class GameController {
     getListOfGames(
         @Query() query: { offset; limit; difficulty?; time?; sparcity? }
     ) {
-        const gamesList = this.gameService.getGamesByQuery(query)
+        const gamesList = this.gameService.getByQuery(query)
         return gamesList
     }
     @Get(':id')
     getGameById(@Param() params) {
-        const game = this.gameService.getGameById(params.id)
+        const game = this.gameService.getById(params.id)
         return game
     }
     @Post()
     addGame(@Body('gameData') gameData) {
-        const newGame = this.gameService.addGame(gameData)
+        const newGame = this.gameService.create(gameData)
         return newGame
     }
 }

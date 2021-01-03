@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
+import { Game } from '../game/game.model'
 
 export class SaveGame {
     id: string
@@ -7,7 +8,7 @@ export class SaveGame {
     startDate: string
     lastPlayed: string
     progress: number
-    constructor(public game: any) {
+    constructor(public game: Game) {
         this.id = uuidv4()
         this.startDate = Date.now().toString()
     }

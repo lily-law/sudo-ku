@@ -32,10 +32,15 @@ export class UserService {
         this.userDB[userId].savedGames[saveGame.id] = saveGame
         return { ...this.userDB[userId].savedGames[saveGame.id] }
     }
-    updateSaveGame(userId: string, saveGame: SaveGame) {
-        this.checkSaveGameExists(userId, saveGame.id)
-        this.userDB[userId].savedGames[saveGame.id] = saveGame
-        return { ...this.userDB[userId].savedGames[saveGame.id] }
+    getSaveGame(userId: string, gameId: string) {
+        this.checkSaveGameExists(userId, gameId)
+        const saveGame = this.userDB[userId].savedGames[gameId]
+        return saveGame
+    }
+    updateSaveGame(userId: string, gameId: string, saveGame: SaveGame) {
+        this.checkSaveGameExists(userId, gameId)
+        this.userDB[userId].savedGames[gameId] = saveGame
+        return { ...this.userDB[userId].savedGames[gameId] }
     }
     private checkUserExists(id) {
         if (!this.userDB[id]) {
